@@ -132,8 +132,8 @@ class GeneralLinearModel:
 
     def predict(self, new_data):
         predictions = np.array([])
-        for row in new_data:
-            predictions = np.append(predictions, self.mean_fucntion(self.parameters, new_data[row]))
+        for row in new_data.iterrows():
+            predictions = np.append(predictions, self.mean_fucntion(self.parameters, row[1]))
         return predictions
                 
 
