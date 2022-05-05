@@ -46,7 +46,7 @@ class GeneralLinearModel:
 
         if self.model_type == 'logistic':
             def mean_function(current_parameters, data_row):
-                return( 1 / 1 + np.exp(-np.dot(current_parameters, data_row)))
+                return( 1 / (1 + np.exp(-np.dot(current_parameters, data_row))))
         return mean_function
 
     def targetVariance(self, current_parameters):
@@ -143,36 +143,3 @@ class GeneralLinearModel:
         std_errors = [np.sqrt(info_matrix_inverse[i][i]) for i in range(0, info_matrix_inverse.shape[0])]
         return std_errors
             
-                
-
-          
-
-def main():
-
-    # two_dim_test = pd.DataFrame({'x1': [1,2,3,4,5], 'x2': [1,1,1,1,1], 'target': [3,5,7,9,11]})
-    # test_param = np.array([1,1])
-
-    # test_linear_model = GeneralLinearModel(two_dim_test, 'linear', 'target')
-    # W = test_linear_model.calcW(test_param)
-    # info_mat = test_linear_model.informationMatrix(test_param, W)
-
-    # print(test_linear_model.parameters)
-
-
-    happieness_data = pd.read_csv(r'C:\Users\jrsaf\Desktop\School\Machine Learning\Projects\happiness.csv')
-    happieness_data = happieness_data.drop(columns=['Overall rank', 'Country or region'])
-
-    happiness_linear_model = GeneralLinearModel(happieness_data, 'linear', 'Score')
-    print(happiness_linear_model.parameters)
-
-    predictions = np.array([])
-
-    for i in range(0, happiness_linear_model.design_matrix.shape[0]):
-        predictions = np.append(predictions, happiness_linear_model.mean_fucntion(happiness_linear_model.parameters, happiness_linear_model.design_matrix[i]))
-
-    rmse = np.sqrt((1/happiness_linear_model.design_matrix.shape[0])) * np.sqrt(sum((predictions - happiness_linear_model.target_vector)**2))
-
-    print(rmse)
-    
-if __name__ == "__main__":
-    main()
