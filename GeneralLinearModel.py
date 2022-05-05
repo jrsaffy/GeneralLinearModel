@@ -80,7 +80,7 @@ class GeneralLinearModel:
         W = np.zeros((self.num_data, self.num_data))
 
         for i in range(0, self.num_data):
-            W[i][i] = (1 / variance) * self.calcMeanFunctionDerivative(current_parameters, self.design_matrix[i])
+            W[i][i] = (1 / variance) * (self.calcMeanFunctionDerivative(current_parameters, self.design_matrix[i]))**2
             
         return W
 
