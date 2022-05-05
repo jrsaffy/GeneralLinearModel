@@ -28,6 +28,7 @@ class GeneralLinearModel:
         self.max_itter = max_itter
         self.convergence_limit = convergence
         self.parameters = self.itterativeLeastSquares()
+        self.standard_errors = self.standardErrors()
 
     def setMeanFunctionDerivative(self, model_type):
         if(self.model_type == 'linear'):
@@ -95,6 +96,7 @@ class GeneralLinearModel:
     def informationMatrix(self, current_parameters, W):
         designByW = np.matmul(self.design_matrix.transpose(), W)
         information = np.matmul(designByW, self.design_matrix)
+        self.information_matrix = information
         return information
 
     def calcRightSide(self, current_parameters, W):
@@ -135,6 +137,12 @@ class GeneralLinearModel:
         for row in new_data.iterrows():
             predictions = np.append(predictions, self.mean_fucntion(self.parameters, row[1]))
         return predictions
+
+    def standardErrors(self):
+        info_matrix_inverse = np.linalg.inv(self.information_matrix)
+        std_errors = [np.sqrt(info_matrix_inverse[i][i]) for i in range(0, info_matrix_inverse.shape[0])]
+        return std_errors
+            
                 
 
           
